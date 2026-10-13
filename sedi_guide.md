@@ -32,6 +32,7 @@ The following diagram shows the SEDI chain of authority, the associated AIDs for
 
 ### Diagram of Chain-of-Authority
 
+![SEDI_Delegation_Core](assets/SEDI_Delegation_Core.png)
 
 ### Identity Assurance Process
 
