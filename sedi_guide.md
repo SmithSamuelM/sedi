@@ -1,5 +1,7 @@
 # SEDI Implementation Guide
 
+version 0.2.0  2026/10/14
+
 ## Introduction
 The term ACDC stands for Authentic Chained Data Container. It is the supporting format and protocol used for SEDI. The ACDC protocol is an open standard with open-source tooling. The ACDC specification is dependent on and leverages both the KERI and CESR specifications. The specifications may be found here [ACDC Specification](https://trustoverip.github.io/kswg-acdc-specification/), [KERI Specification](https://trustoverip.github.io/kswg-keri-specification/), and [CESR Specification](https://trustoverip.github.io/kswg-cesr-specification/)
 
@@ -30,9 +32,13 @@ An ACDC as a delegation has an Issuer AID and an Issuee AID. The Issuer is the D
 
 The following diagram shows the SEDI chain of authority, the associated AIDs for each party, and the ACDCs in that issuance chain. The schema for these ACDCs is given in a later section. 
 
-### Diagram of Chain-of-Authority
+### Diagram of Chain-of-Authority to Core Identity
 
-![SEDI_Delegation_Core](assets/SEDI_Delegation_Core.png)
+![SEDI_Delegation_Core](assets/SEDI_Delegation_Core-1.png)
+
+### Diagram of Chain-of-Authority to Guardianship Delegation
+
+![SEDI_Guardianship](assets/SEDI_Guardianship.png)
 
 ### Identity Assurance Process
 
@@ -846,6 +852,122 @@ CoreSchema = \
   'r': 
   {
     'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 'l': ''
+  }
+}
+```
+
+#### Citizen as Ward Core Identity ACDC Example
+
+```python
+{
+  'v': 'ACDCCAACAAJSONAAnI.',
+  't': 'acm',
+  'd': 'EO2_WbE5hiB3HpwD2XDQShBDXSLsh7cYaIil_pWOBplX',
+  'u': '0AA2MlkrX649UaLoE4LCCkH9',
+  'i': 'EKBCU6u_xObNhFc9uuz1VdntNt99xmB2fA5qz7Li-Sl-',
+  'rd': 'EJv5HZo45iTHxlfDXzGubim62AjlPWNST11iCmfTG5LZ',
+  's': 'EN0JtdzBmFuTUzyJG9CXZhtdu-bW0V6L95bsVBzi-cY-',
+  'a': 
+  {
+    'd': 'EAO8EoXIY6j3ijYbZx2D9FbV5atkUejkwBLoqPkDHF-m',
+    'u': '0AA_s2nabbdeAZwF3JjfnO2S',
+    'i': 'EKr8JLtfqWCmHrxO3yu8ocS2n9o0Tlspeaqm9ZOf3FM1',
+    'rd': 'EAbxluMtNsPnHFu9texttH3G6B1s3ZqmJwpLhNbgc6ib',
+    'primary': True,
+    'givenName': 
+    {
+      'd': 'EKCbI7LM2X4t8JsVHtMAOOoVb5QQYHq6DeSHD28mywQm',
+      'u': '0ACI4aDqXnh9TxPQjD6t9Hxj',
+      'value': 'Wyn'
+    },
+    'middleName': 
+    {
+      'd': 'EPDk6T5mEGjVX1FTti3iaiIH9kHzgywDclD1rLJyaikS',
+      'u': '0AD9wK9pALAbcI4f4A3Nk_l8',
+      'value': 'Biff'
+    },
+    'familyName': 
+    {
+      'd': 'EFE_tlePMMqIE-p_kSpAGHS8XXC8wUlEChsKVAimOO4f',
+      'u': '0AAzJH9-zrvBCkTzbohPtGxU',
+      'value': 'Brown'
+    },
+    'nameSuffix': 
+    {
+      'd': 'EHGYewGuju4W-Nj0IRVlXg0mEld9Nvh8hDMIX56GFEyF',
+      'u': '0ABT57tmyCrrTCRb265VxiQl',
+      'value': ''
+    },
+    'birthDate': 
+    {
+      'd': 'EBaEu3HRO-HIe_XUuX7mZtdi1O3mMD0hpTJt_qr6dBxV',
+      'u': '0AClzgUAU1nPamJMtvP5t7KD',
+      'value': '2012-06-21T00:00:00.000000+00:00'
+    },
+    'facialImageProof': 
+    {
+      'd': 'EIdvmGO9ewW7yEPJPr6ExQ3SY9lEYJgKT8NwPy81d0yv',
+      'u': '0ABZnItnZv4Srda8XgnTT-iV',
+      'value': 'EJFuvB2J1bShwbGmRV4Ignf25r6Pzo8bHg_BeMKmc9wV'
+    },
+    'legalPresenceStatus': 
+    {
+      'd': 'EA5TD6VPhiTTg4lCK2SnbUip8dI4VYwhot3qlr9Y3bLA',
+      'u': '0ABRPKq-gS_CKApknYsdVrBI',
+      'value': 'citizen'
+    },
+    'issuedDate': 
+    {
+      'd': 'EG8ZYQnOx7LLTN2WaurlQ3WFi6pHAtDlAEu3U-v0uMZE',
+      'u': '0ACkKfbJ_UmJyJ7U6BFqi9M7',
+      'value': '2026-10-01T00:00:00.000000+00:00'
+    },
+    'expirationDate': 
+    {
+      'd': 'EC-Zrgr4tgbUp4IzrBhWNfMaUThXCpTB1vAmdKR8HCuS',
+      'u': '0ACEKNaoMj9ZHatY4EqZKTJP',
+      'value': '2028-06-21T00:00:00.000000+00:00'
+    }
+  },
+  'e': 
+  {
+    'd': 'ELoG2b0V_Kd3jcshqltJIaWV2Ho3qsaUMEKYsFnUFDpZ',
+    'u': '0AARySR4JDpLn0eZaPqS28ns',
+    'utahAgent': 
+    {
+      'd': 'EIFT58wZT1seXszmBPErHGB7xMUMWOT8EiG-zLzKd8C1',
+      'u': '0ABTHEB1Dmm26ztL6ZggPIIr',
+      'n': 'EOD4QiWo1oa6UtiEr456Lu0ba3v1Cmd6qOPoRbAdx2hD',
+      's': 'EGx4BLclkjhaK1501guyBifxuTTJLwuK61InBTdkKF7v',
+      'o': 'DI2I'
+    },
+    'guardians': 
+    {
+      'd': 'EPSKyilcwaJdOd_B6C-tUdJs9MWyaefbtCjJ4Kc_Nld2',
+      'u': '0ACKOqErIE0rfIf20KsJa9lV',
+      'o': 'OR',
+      'first': 
+      {
+        'd': 'EI9xHRCHmtsJC4Y8Nk4DSLuFyKJejJbEpMja8-q8sbdW',
+        'u': '0ADInES4ee08OqL13tRxLDd0',
+        'n': 'EONzgE0pcYF7hz1E_VVN4ea9iv75Q_C2ifhsZV1j6uQp',
+        's': 'EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b',
+        'o': 'NI2I'
+      },
+      'second': 
+      {
+        'd': 'EJkHGwZE2qfP11o-twXw4DH2DRXl192JGQ_t9vwMwf0r',
+        'u': '0ABqvJ2yrVM960ha_0ZrZOkc',
+        'n': 'ENTwQxDFnVXigOTcymAXSHCgl26a0p3POYiRFnTL1lb0',
+        's': 'EDJzXg34opr6-odFix6lpiccfHF7ksITHuIES_MQRH4b',
+        'o': 'NI2I'
+      }
+    }
+  },
+  'r': 
+  {
+    'd': 'EFPxq4WPl29szUqbrQIviOh_Ls_RlrYbp4L-fdQH0XrX', 
+    'l': ''
   }
 }
 ```
