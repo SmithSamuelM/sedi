@@ -1,6 +1,6 @@
 # SEDI Implementation Guide
 
-version 0.2.1  2026/10/14
+version 0.2.2  2026/10/17
 
 ## Introduction
 The term ACDC stands for Authentic Chained Data Container. It is the supporting format and protocol used for SEDI. The ACDC protocol is an open standard with open-source tooling. The ACDC specification is dependent on and leverages both the KERI and CESR specifications. The specifications may be found here [ACDC Specification](https://trustoverip.github.io/kswg-acdc-specification/), [KERI Specification](https://trustoverip.github.io/kswg-keri-specification/), and [CESR Specification](https://trustoverip.github.io/kswg-cesr-specification/). Working code that generates the schemas and ACDC examples can be found here [Working example generation code](https://github.com/WebOfTrust/keripy/tree/main/tests/sedi).
@@ -51,6 +51,48 @@ The SEDI program for a given Citizen begins with a [NIST IAL3](https://pages.nis
 Once the initial IAL3 proofing session is complete, further refreshes of the citizen's core identity can be much simpler because presenting physical evidence supporting the core identity from original sources is not required. Typically, the refresh will be for the facial image biometric, which must be refreshed every few years to account for changes in appearance. This reduces identity assurance costs to a minimum without sacrificing security. The citizen's residence address is provided in a separate linked ACDC that can be updated independently of the core identity ACDC. Likewise, a proof-of-age ACDC that does not disclose the Citizen's birthdate is also provided in a separate linked ACDC so updates to proof-of-age thresholds can occur without requiring reissuance of the core identity ACDC.
 
 The schema along with an example ACDC for the IAL3 proofing session receipt is provided in a later section.
+
+## Infrastructure
+
+### KERI Infrastructure
+
+![KERI_Infrastructure](assets/KERI_Infrastructure.png)
+
+
+### ACDC Infrastructure
+
+![ACDC_Infrastructure](assets/ACDC_Infrastructure.png)
+
+
+#### Issuance Registry
+
+
+![ACDC_Issuance_Registry](assets/ACDC_Issuance_Registry.png)
+
+#### Presentation Registry
+
+![ACDC_Presentation_Registry](assets/ACDC_Presentation_Registry.png)
+
+
+#### Static Perpetual Proof-of-Issuance versus Dynamic Proof-of-State
+
+When presenting an ACDC, the Citizen as presenter is always able, by design, to present a proof of issuance by the State as issuer of a SEDI ACDC held by the Citizen without an online presence. The proof of issuance is perfectly static and may be stored in the Citizen's wallet and presented on demand without any need for either the Citizen or the verifier of that proof of issuance to contact the state or to have an active internet connection. The proof of issuance may be exchanged using a local peer-to-peer connection. This static proof is perpetual. Changes in the keystate of either or both the State or the Citizen do not affect its verifiability. The Citizen's wallet holds all the proof artifacts needed to provide a proof of issuance at any point in the future for any ACDC issued to that Citizen by the State.
+
+Each ACDC in a SEDI chain of authority as issued by the State is anchored via a seal in the KEL (Key Event Log) of the issuer. The anchor provides a perpetually verifiable proof of authenticity of that issuance. When issued, the Citizen receives a copy of the issuer's KEL up to and including the event with the anchoring seal.  The seal is in one of two forms: In the first the seal contains the SAID (hash) of the ACDC itself.  In the second, the seal contains the SAID (hash) of the event in the state registry of the ACDC.  A state registry enables an ACDC to have dynamic state such as revocation. 
+
+At any later time, the citizen can provide this KEL copy to a verifier. The verifier does not need to know the current state of the Issuer's KEL, only the state up to and including the anchoring seal that proves authentic issuance.  This construction holds for every ACDC in the chain of authority.  This perpetual proof mechanism uses what we call percolated discovery to provide the needed proof artifacts at the time of presentation. No global discovery mechanism is required. No phone home. No direct interaction between the Verifier and the Issuer.
+
+When an ACDC has dynamic state, such as revocability, the Issuer dynamically updates the registry that maintains that state.  In this case, the verifier must obtain a copy of that state. This means the resolution of dynamic state updates depends on how often the verifier refreshes its cache of the dynamic state, aka the registry state.
+
+To clarify, ACDCs that do not have dynamic state, i.e., are non-revocable but may have expiration dates, have perfectly static proofs of issuance.  There is no dynamic caching required.  Whereas ACDCs that do have dynamic state, i.e. are dynamically revocable, with or without expiration dates, have a registry controlled by the issuer. A verifier needs to know the registry's current state to determine whether the ACDC has been revoked.  This is independent of its static proof of authentic issuance.
+
+Cache timing and refresh design becomes part of the ecosystem governance framework to account for applications where a verifier might not be able to update its cached copy of the registry state for some time (hours or days). The legal policy in those cases needs to be defined.
+
+The diagram above shows two infrastructure services relevant to ACDC dynamic state registries. The first is a Registrar service. This service is maintained by any issuer of any ACDCs with dynamic state. The second is an Observer network. Verifiers of ACDCs with dynamic state maintain this. The Observer network caches ACDC state with a cache refresh period (which may be specific to a given ACDC type, as determined by its Ecosystem Governance Framework). When a verifier receives a presentation from a Citizen of a SEDI ACDC or graph (chain) of ACDCs where any have dynamic state and hence have a registry, the verifier consults the observer network to find the latest state for that ACDC so presented. 
+
+Suppose, for example, that driver's licenses have a validity resolution of one day. That means a revoked driver's license is invalid for the next 24-hour period beginning at midnight on the day the State issues the revocation event. The revocation takes effect the next day. This is the revocation date. To catch any driver's license revocations without loss, the observer contacted by that verifier must refresh its caches at midnight each day.  Then, even if a network outage occurs during the next 24-hour period, the observer will correctly report the revocation state. Special allowance may be made for law enforcement operating in network-denied environments that prevent them from updating their observer caches for periods longer than 24 hours.
+
+The observer network's main purpose is to isolate requests from verifiers of dynamic ACDC state at the point of validation from the Issuer. The observer network prevents the State from observing, without legally repressed collusion with Observers, when, where, and to whom a Citizen presents their SEDI ACDCs.The Registrar updates the observer network in bulk, thereby providing herd privacy to the observer network.  
 
 
 ## SEDI ACDC Schemas
