@@ -1,6 +1,6 @@
 # SEDI Implementation Guide
 
-version 0.2.1  2026/10/14
+version 0.2.2  2026/10/17
 
 ## Introduction
 The term ACDC stands for Authentic Chained Data Container. It is the supporting format and protocol used for SEDI. The ACDC protocol is an open standard with open-source tooling. The ACDC specification is dependent on and leverages both the KERI and CESR specifications. The specifications may be found here [ACDC Specification](https://trustoverip.github.io/kswg-acdc-specification/), [KERI Specification](https://trustoverip.github.io/kswg-keri-specification/), and [CESR Specification](https://trustoverip.github.io/kswg-cesr-specification/). Working code that generates the schemas and ACDC examples can be found here [Working example generation code](https://github.com/WebOfTrust/keripy/tree/main/tests/sedi).
