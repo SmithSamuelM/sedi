@@ -61,12 +61,13 @@ The schema along with an example ACDC for the IAL3 proofing session receipt is p
 
 ### ACDC Infrastructure
 
-![KERI_Infrastructure](assets/KERI_Infrastructure.png)
+![ACDC_Infrastructure](assets/ACDC_Infrastructure.png)
 
 
 #### Issuance Registry
 
-![KERI_Infrastructure](assets/KERI_Infrastructure.png)
+
+![ACDC_Issuance_Registry](assets/ACDC_Issuance_Registry.png)
 
 #### Presentation Registry
 
