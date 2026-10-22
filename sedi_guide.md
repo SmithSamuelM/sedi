@@ -213,7 +213,7 @@ Consider the following example of a fully disclosed SEDI Core Identity ACDC:
 }
 ```
 
-Focus on the attribute `a` section as SAIDed field map of several other SAIDed field maps.
+First let's focus on the attribute `a` section as SAIDed field map of several other SAIDed field maps as follows:
 
 ```python
 'a': 
@@ -281,7 +281,9 @@ Focus on the attribute `a` section as SAIDed field map of several other SAIDed f
 
 ```
 
-Each SAIDed field map has a SAID `d` field and a unique entropy `u` field. The most compact algorithm treats the SAID `d` fields as special and will recursively collapse any nested field map with a SAID `d` field. When present, the unique entropy `u` field means the collapsed representation, using only the SAID field for the whole field map and a known schema, leaks no information about any of the other fields in the field map. Thus, a disclosure that does not expand a given SAIDed field map proves the collapsed data's presence without revealing it. Technically, this is a type of zero-knowledge proof (ZKP) and operates similarly to a Merkle tree. It proves the disclosed data is correct without revealing or leaking any undisclosed data.
+Please notice that each SAIDed field map has a SAID `d` field and a unique entropy `u` field. The most compact algorithm treats the SAID `d` fields as special and will recursively collapse any nested field map with a SAID `d` field. When present, the unique entropy `u` field prevents the collapsed representation, using only the SAID field for the whole field map and a known schema, from leaking any information about any of the other fields in the field map. Thus, a disclosure that does not expand a given SAIDed field map proves the collapsed data's presence without revealing it. 
+
+Technically, this is a type of zero-knowledge proof (ZKP) that operates similarly to a Merkle tree. It proves the disclosed data is correct without revealing or leaking any undisclosed data.
 
 The discloser can then choose which parts to disclose to different verifiers as needed, with provable disclosures, without leaking any data not yet disclosed.
 
